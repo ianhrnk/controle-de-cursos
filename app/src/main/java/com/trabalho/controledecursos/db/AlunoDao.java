@@ -15,6 +15,6 @@ public interface AlunoDao {
     @Delete
     public void deletarAluno(Aluno aluno);
 
-    @Query("SELECT * FROM Aluno")
+    @Query("SELECT * FROM aluno")
     public List<Aluno> selecionarTodos();
 }
