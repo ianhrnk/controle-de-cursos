@@ -12,11 +12,19 @@
         <!--android:theme="@style/"> -->
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/main_toolbar"
+            android:id="@+id/tbrMain"
+            app:title="Controle de Cursos"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddCurso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="Adicionar um novo curso"
+        app:srcCompat="@drawable/baseline_add_black_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,13 +4,18 @@
 
     <item
         android:id="@+id/main_search"
+        android:contentDescription="Ferramenta de busca"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="Search"
+        android:title="Buscar"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/configuration"
         android:title="Configurações"
         app:showAsAction="never" />
-    <item android:title="Sobre nós" />
+
+    <item
+        android:id="@+id/about_us"
+        android:title="Sobre nós" />
 </menu>
