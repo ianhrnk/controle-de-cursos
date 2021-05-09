@@ -10,5 +10,5 @@ import java.util.List;
 public interface CursoAlunoDao {
     @Transaction
     @Query("SELECT * FROM Curso")
-    public List<CursoAluno> obterAlunos();
+    List<CursoAluno> obterAlunos();
 }

@@ -10,11 +10,11 @@ import java.util.List;
 @Dao
 public interface CursoDao {
     @Insert
-    public void inserirCurso(Curso curso);
+    void inserirCurso(Curso curso);
 
     @Delete
-    public void deletarCurso(Curso curso);
+    void deletarCurso(Curso curso);
 
     @Query("SELECT * FROM curso")
-    public List<Curso> selecionarTodos();
+    List<Curso> selecionarTodos();
 }
