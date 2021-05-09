@@ -6,8 +6,12 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "aluno")
 public class Aluno {
-    @PrimaryKey
-    public int id;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "aluno_id")
+    public int alunoId;
+
+    @ColumnInfo(name = "curso_id")
+    public int cursoId;
 
     @ColumnInfo(name = "nome_aluno")
     public String nomeAluno;
@@ -16,10 +20,3 @@ public class Aluno {
     public String email;
     public String telefone;
 }
-
-/*
-@Entity(foreignKeys = {@ForeignKey(entity = ParentClass.class,
-        parentColumns = "parentClassColumn",
-        childColumns = "childClassColumn",
-        onDelete = ForeignKey.CASCADE)})
-*/
