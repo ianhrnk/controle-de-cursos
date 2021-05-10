@@ -15,9 +15,6 @@ public interface CursoDao {
     @Delete
     void deletarCurso(Curso curso);
 
-    @Query("SELECT * FROM curso")
+    @Query("SELECT * FROM curso ORDER BY nome_curso COLLATE NOCASE")
     List<Curso> selecionarTodos();
-
-    @Query("SELECT nome_curso FROM curso ORDER BY nome_curso COLLATE NOCASE")
-    String[] obterNomesCursos();
 }

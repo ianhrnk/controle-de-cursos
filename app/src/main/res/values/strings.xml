@@ -4,4 +4,6 @@
     <string name="adicionar_curso">Adicionar curso</string>
     <string name="quantidade_horas">Quantidade de horas</string>
     <string name="nome">Nome</string>
+    <string name="alunos">Alunos</string>
+    <string name="ch">CH: %1$d</string>
 </resources>

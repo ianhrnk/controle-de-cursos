@@ -7,7 +7,7 @@
     tools:context=".DadosCursoActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbrDadosCurso"
+        android:id="@+id/tbr_dadoscurso"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -18,7 +18,7 @@
         app:title="Dados do curso" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtNomeCurso"
+        android:id="@+id/txt_main_nomecurso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -33,12 +33,12 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbrDadosCurso"
+        app:layout_constraintTop_toBottomOf="@+id/tbr_dadoscurso"
         app:startIconContentDescription="Nome"
         app:startIconDrawable="@drawable/baseline_groups_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtNomeCurso"
+            android:id="@+id/edt_dadoscurso_nomecurso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -62,17 +62,17 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNomeCurso">
+        app:layout_constraintTop_toBottomOf="@+id/txt_main_nomecurso">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtQtdeHoras"
+            android:id="@+id/edt_dadoscurso_ch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberSigned" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnAdicionarCurso"
+        android:id="@+id/btn_dadoscurso_addcurso"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

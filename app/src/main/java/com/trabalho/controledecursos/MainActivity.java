@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = AppDatabase.getDatabase(this);
 
-        Toolbar tbrMain = findViewById(R.id.tbrMain);
+        Toolbar tbrMain = findViewById(R.id.tbr_main);
         setSupportActionBar(tbrMain);
 
         FloatingActionButton fabAdicionarCurso = findViewById(R.id.fabAddCurso);
@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(it);
         });
 
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerview_main);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        CursosAdapter cursosAdapter = new CursosAdapter(db.cursoDao().obterNomesCursos(), this);
+        CursosAdapter cursosAdapter = new CursosAdapter(this, db.cursoDao());
         recyclerView.setAdapter(cursosAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -75,5 +75,10 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Não faz nada ao pressionar o botão de voltar
     }
 }

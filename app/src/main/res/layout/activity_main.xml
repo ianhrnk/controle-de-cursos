@@ -20,14 +20,14 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tbrMain"
+                android:id="@+id/tbr_main"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="Controle de Cursos" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerview_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="56dp"

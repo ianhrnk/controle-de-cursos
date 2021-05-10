@@ -5,7 +5,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -21,7 +20,7 @@ public class DadosCursoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_curso);
 
-        Toolbar toolbar = findViewById(R.id.tbrDadosCurso);
+        Toolbar toolbar = findViewById(R.id.tbr_dadoscurso);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
@@ -29,12 +28,12 @@ public class DadosCursoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        TextInputLayout txtNomeCurso = findViewById(R.id.txtNomeCurso);
+        TextInputLayout txtNomeCurso = findViewById(R.id.txt_main_nomecurso);
         TextInputLayout txtQntdHoras = findViewById(R.id.txtQntdHoras);
-        TextInputEditText edtNomeCurso = findViewById(R.id.edtNomeCurso);
-        TextInputEditText edtQntdHoras = findViewById(R.id.edtQtdeHoras);
+        TextInputEditText edtNomeCurso = findViewById(R.id.edt_dadoscurso_nomecurso);
+        TextInputEditText edtQntdHoras = findViewById(R.id.edt_dadoscurso_ch);
 
-        Button btnAdicionarCurso = findViewById(R.id.btnAdicionarCurso);
+        Button btnAdicionarCurso = findViewById(R.id.btn_dadoscurso_addcurso);
         btnAdicionarCurso.setOnClickListener(v -> {
             boolean erro = false;
 
@@ -64,20 +63,8 @@ public class DadosCursoActivity extends AppCompatActivity {
 
                 Intent it = new Intent(DadosCursoActivity.this, MainActivity.class);
                 startActivity(it);
+                finish();
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            Intent it = new Intent(DadosCursoActivity.this, MainActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(it);
-            return true;
-        }
-        else {
-            return super.onOptionsItemSelected(item);
-        }
     }
 }
