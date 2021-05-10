@@ -23,24 +23,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:hint="Nome"
-        app:startIconDrawable="@drawable/baseline_groups_24"
-        app:startIconContentDescription="Nome"
-        app:endIconMode="clear_text"
+        android:hint="@string/nome"
         app:counterEnabled="true"
-        app:counterMaxLength="20"
+        app:counterMaxLength="25"
+        app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbrDadosCurso">
+        app:layout_constraintTop_toBottomOf="@+id/tbrDadosCurso"
+        app:startIconContentDescription="Nome"
+        app:startIconDrawable="@drawable/baseline_groups_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtNomeCurso"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +53,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:hint="Quantidade de horas"
+        android:hint="@string/quantidade_horas"
         app:startIconDrawable="@drawable/baseline_schedule_24"
         app:startIconContentDescription="Horas"
         app:endIconMode="clear_text"
@@ -66,7 +67,25 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtQtdeHoras"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnAdicionarCurso"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="105dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginEnd="105dp"
+        android:layout_marginRight="105dp"
+        android:layout_marginBottom="105dp"
+        android:text="@string/adicionar_curso"
+        app:icon="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

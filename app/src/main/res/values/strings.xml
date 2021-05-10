@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ControleDeCursos</string>
+    <string name="formato_incorreto">Formato incorreto</string>
+    <string name="adicionar_curso">Adicionar curso</string>
+    <string name="quantidade_horas">Quantidade de horas</string>
+    <string name="nome">Nome</string>
 </resources>
