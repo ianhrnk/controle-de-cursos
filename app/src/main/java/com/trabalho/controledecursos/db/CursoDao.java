@@ -18,6 +18,6 @@ public interface CursoDao {
     @Query("SELECT * FROM curso")
     List<Curso> selecionarTodos();
 
-    @Query("SELECT nome_curso FROM curso")
+    @Query("SELECT nome_curso FROM curso ORDER BY nome_curso COLLATE NOCASE")
     String[] obterNomesCursos();
 }
