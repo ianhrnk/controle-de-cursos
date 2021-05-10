@@ -17,4 +17,7 @@ public interface CursoDao {
 
     @Query("SELECT * FROM curso")
     List<Curso> selecionarTodos();
+
+    @Query("SELECT nome_curso FROM curso")
+    String[] obterNomesCursos();
 }

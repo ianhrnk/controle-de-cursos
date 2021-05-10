@@ -37,12 +37,14 @@ public class DadosCursoActivity extends AppCompatActivity {
         Button btnAdicionarCurso = findViewById(R.id.btnAdicionarCurso);
         btnAdicionarCurso.setOnClickListener(v -> {
             boolean erro = false;
+
             txtNomeCurso.setError(null);
             txtQntdHoras.setError(null);
+
             String nomeCurso = edtNomeCurso.getText().toString();
             String qntdHoras = edtQntdHoras.getText().toString();
 
-            if (nomeCurso.isEmpty() || nomeCurso.length() > 24)  {
+            if (nomeCurso.isEmpty() || nomeCurso.length() > 25)  {
                 erro = true;
                 txtNomeCurso.setError(getString(R.string.formato_incorreto));
             }
