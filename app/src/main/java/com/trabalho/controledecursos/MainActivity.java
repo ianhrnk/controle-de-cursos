@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar tbrMain;
     TabLayout tabLayout;
     ViewPager2 viewPager;
+    FloatingActionButton fabAddCurso;
+    FloatingActionButton fabAddAluno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
         tbrMain = findViewById(R.id.tbr_main);
         setSupportActionBar(tbrMain);
 
-        FloatingActionButton fabAdicionarCurso = findViewById(R.id.fabAddCurso);
-        fabAdicionarCurso.setOnClickListener(v -> {
+        fabAddAluno = findViewById(R.id.fab_main_addaluno);
+        fabAddCurso = findViewById(R.id.fab_main_addcurso);
+        fabAddCurso.setOnClickListener(v -> {
             Intent it = new Intent(MainActivity.this, DadosCursoActivity.class);
             startActivity(it);
         });
@@ -54,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
                         tab.setText("Alunos");
                 }
         ).attach();
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            public void onPageSelected(int position) {
+                changeFab(position);
+            }
+        });
     }
 
     @Override
@@ -109,6 +117,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return 2;
+        }
+    }
+
+    private void changeFab(int position) {
+        if (position == 0) {
+            fabAddCurso.show();
+            fabAddAluno.hide();
+        }
+        else {
+            fabAddCurso.hide();
+            fabAddAluno.show();
         }
     }
 }

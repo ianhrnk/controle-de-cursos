@@ -2,6 +2,7 @@
     <string name="app_name">ControleDeCursos</string>
     <string name="formato_incorreto">Formato incorreto</string>
     <string name="cadastrar_curso">Cadastrar curso</string>
+    <string name="cadastrar_aluno">Cadastrar aluno</string>
     <string name="quantidade_horas">Quantidade de horas</string>
     <string name="nome">Nome</string>
     <string name="cursos">Cursos</string>
