@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class CursoActivity extends AppCompatActivity {
+public class AlunoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +22,10 @@ public class CursoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        TextView txtNomeCurso = findViewById(R.id.txt_curso_nomecurso);
-        TextView txtCH = findViewById(R.id.txt_curso_ch);
+        TextView txtNomeAluno = findViewById(R.id.txt_aluno_nomealuno);
+        //TextView txtCH = findViewById(R.id.txt_curso_ch);
 
         Intent intent = getIntent();
-        int ch = intent.getIntExtra("ch", 0);
-
-        txtNomeCurso.setText(intent.getStringExtra("nome"));
-        txtCH.setText(getString(R.string.ch, ch));
+        txtNomeAluno.setText(intent.getStringExtra("nome"));
     }
 }

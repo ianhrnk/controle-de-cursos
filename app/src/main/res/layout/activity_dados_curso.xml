@@ -81,7 +81,7 @@
         android:layout_marginEnd="105dp"
         android:layout_marginRight="105dp"
         android:layout_marginBottom="105dp"
-        android:text="@string/adicionar_curso"
+        android:text="@string/cadastrar_curso"
         app:icon="@drawable/baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,10 +1,12 @@
 package com.trabalho.controledecursos;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,14 +14,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.trabalho.controledecursos.db.AppDatabase;
 
 public class MainActivity extends AppCompatActivity {
     AppDatabase db;
-    RecyclerView recyclerView;
-    DividerItemDecoration dividerItemDecoration;
+    Toolbar tbrMain;
+    TabLayout tabLayout;
+    ViewPager2 viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = AppDatabase.getDatabase(this);
 
-        Toolbar tbrMain = findViewById(R.id.tbr_main);
+        tbrMain = findViewById(R.id.tbr_main);
         setSupportActionBar(tbrMain);
 
         FloatingActionButton fabAdicionarCurso = findViewById(R.id.fabAddCurso);
@@ -37,19 +41,24 @@ public class MainActivity extends AppCompatActivity {
             startActivity(it);
         });
 
-        recyclerView = findViewById(R.id.recyclerview_main);
+        tabLayout = findViewById(R.id.tablayout_main);
+        viewPager = findViewById(R.id.viewpager_main);
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        viewPager.setAdapter(viewPagerAdapter);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    if (position == 0)
+                        tab.setText("Cursos");
+                    else
+                        tab.setText("Alunos");
+                }
+        ).attach();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        CursosAdapter cursosAdapter = new CursosAdapter(this, db.cursoDao());
-        recyclerView.setAdapter(cursosAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                                DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
@@ -80,5 +89,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Não faz nada ao pressionar o botão de voltar
+    }
+
+    public class ViewPagerAdapter extends FragmentStateAdapter {
+
+        public ViewPagerAdapter(FragmentActivity fa) {
+            super(fa);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            if (position == 0)
+                return new CursosFragment(db.cursoDao());
+            else
+                return new AlunosFragment(db.alunoDao());
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
     }
 }
