@@ -27,7 +27,7 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.ViewHolder
         public ViewHolder(View view) {
             super(view);
             txtNomeCurso = view.findViewById(R.id.txt_main_nomecurso);
-            constraintLayout = view.findViewById(R.id.constraintlayout_linhacurso);
+            constraintLayout = view.findViewById(R.id.constraintlayout_linha_curso);
         }
     }
 

@@ -1,13 +1,16 @@
 <resources>
     <string name="app_name">ControleDeCursos</string>
     <string name="formato_incorreto">Formato incorreto</string>
+    <string name="concluir">Concluir</string>
     <string name="cadastrar_curso">Cadastrar curso</string>
     <string name="cadastrar_aluno">Cadastrar aluno</string>
     <string name="quantidade_horas">Quantidade de horas</string>
     <string name="nome">Nome</string>
+    <string name="curso">Curso</string>
     <string name="cursos">Cursos</string>
     <string name="alunos">Alunos</string>
     <string name="ch">CH: %1$d</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cpf">CPF</string>
+    <string name="email">Email</string>
+    <string name="telefone">Telefone</string>
 </resources>

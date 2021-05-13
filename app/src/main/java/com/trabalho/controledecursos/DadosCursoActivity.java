@@ -28,9 +28,9 @@ public class DadosCursoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        TextInputLayout txtNomeCurso = findViewById(R.id.txt_main_nomecurso);
-        TextInputLayout txtQntdHoras = findViewById(R.id.txtQntdHoras);
-        TextInputEditText edtNomeCurso = findViewById(R.id.edt_dadoscurso_nomecurso);
+        TextInputLayout txtNomeCurso = findViewById(R.id.txt_dadoscurso_nome);
+        TextInputLayout txtQntdHoras = findViewById(R.id.txt_dadoscurso_ch);
+        TextInputEditText edtNomeCurso = findViewById(R.id.edt_dadoscurso_nome);
         TextInputEditText edtQntdHoras = findViewById(R.id.edt_dadoscurso_ch);
 
         Button btnAdicionarCurso = findViewById(R.id.btn_dadoscurso_addcurso);
@@ -59,12 +59,21 @@ public class DadosCursoActivity extends AppCompatActivity {
                 curso.qntdHoras = Integer.parseInt(qntdHoras);
                 db.cursoDao().inserirCurso(curso);
 
-                Toast.makeText(this, "Curso adicionado com sucesso", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Curso cadastrado com sucesso", Toast.LENGTH_SHORT).show();
 
                 Intent it = new Intent(DadosCursoActivity.this, MainActivity.class);
                 startActivity(it);
-                finish();
             }
         });
     }
+    /*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
 }

@@ -17,4 +17,13 @@ public interface CursoDao {
 
     @Query("SELECT * FROM curso ORDER BY nome_curso COLLATE NOCASE")
     List<Curso> selecionarTodos();
+
+    @Query("SELECT curso_id FROM curso ORDER BY nome_curso COLLATE NOCASE")
+    int[] selecionarTodosId();
+
+    @Query("SELECT nome_curso FROM curso ORDER BY nome_curso COLLATE NOCASE")
+    String[] selecionarTodosNomes();
+
+    @Query("SELECT * FROM curso WHERE curso_id = :id")
+    Curso selecionarCurso(int id);
 }

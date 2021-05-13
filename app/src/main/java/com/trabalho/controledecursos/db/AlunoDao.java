@@ -15,6 +15,9 @@ public interface AlunoDao {
     @Delete
     void deletarAluno(Aluno aluno);
 
-    @Query("SELECT * FROM aluno")
+    @Query("SELECT * FROM aluno ORDER BY nome_aluno COLLATE NOCASE")
     List<Aluno> selecionarTodos();
+
+    @Query("SELECT * FROM aluno WHERE aluno_id = :id")
+    Aluno selecionarAluno(int id);
 }

@@ -12,7 +12,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -20,12 +19,13 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.trabalho.controledecursos.db.AppDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    AppDatabase db;
-    Toolbar tbrMain;
-    TabLayout tabLayout;
-    ViewPager2 viewPager;
-    FloatingActionButton fabAddCurso;
-    FloatingActionButton fabAddAluno;
+    private AppDatabase db;
+    private Toolbar tbrMain;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    private FloatingActionButton fabAddCurso;
+    private FloatingActionButton fabAddAluno;
+    //private int tabPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +37,17 @@ public class MainActivity extends AppCompatActivity {
         tbrMain = findViewById(R.id.tbr_main);
         setSupportActionBar(tbrMain);
 
-        fabAddAluno = findViewById(R.id.fab_main_addaluno);
         fabAddCurso = findViewById(R.id.fab_main_addcurso);
-        fabAddCurso.setOnClickListener(v -> {
-            Intent it = new Intent(MainActivity.this, DadosCursoActivity.class);
-            startActivity(it);
-        });
+        fabAddCurso.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, DadosCursoActivity.class)));
+
+        fabAddAluno = findViewById(R.id.fab_main_addaluno);
+        fabAddAluno.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, DadosAlunoActivity.class)));
 
         tabLayout = findViewById(R.id.tablayout_main);
         viewPager = findViewById(R.id.viewpager_main);
-
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setAdapter(new ViewPagerAdapter(this));
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     if (position == 0)
@@ -64,15 +63,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+    /*@Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("tabPosition", tabLayout.getSelectedTabPosition());
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -100,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class ViewPagerAdapter extends FragmentStateAdapter {
+        private final int NUM_ABAS = 2;
 
         public ViewPagerAdapter(FragmentActivity fa) {
             super(fa);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return 2;
+            return NUM_ABAS;
         }
     }
 
