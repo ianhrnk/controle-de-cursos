@@ -13,7 +13,7 @@ public interface AlunoDao {
     long inserirAluno(Aluno aluno);
 
     @Delete
-    void deletarAluno(Aluno aluno);
+    void removerAluno(Aluno aluno);
 
     @Query("SELECT * FROM aluno ORDER BY nome_aluno COLLATE NOCASE")
     List<Aluno> selecionarTodos();

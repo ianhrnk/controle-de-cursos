@@ -3,16 +3,18 @@ package com.trabalho.controledecursos;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.trabalho.controledecursos.db.Aluno;
@@ -20,19 +22,18 @@ import com.trabalho.controledecursos.db.AppDatabase;
 
 public class DadosAlunoActivity extends AppCompatActivity {
     AppDatabase db;
-    TextInputLayout txtNome, txtCpf, txtEmail, txtTelefone, txtCurso;
-    TextInputEditText edtNome, edtCpf, edtEmail, edtTelefone;
-    AutoCompleteTextView actCurso;
-    String nome, cpf, email, telefone;
-    int id_curso;
-    MaterialButton button;
-    Intent intent;
+    private TextInputLayout txtNome, txtCpf, txtEmail, txtTelefone, txtCurso;
+    private TextInputEditText edtNome, edtCpf, edtEmail, edtTelefone;
+    private AutoCompleteTextView actCurso;
+    private String nome, cpf, email, telefone;
+    private int idCurso, idAluno;
+    private boolean showMenu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_aluno);
-        intent = getIntent();
+        Intent intent = getIntent();
         db = AppDatabase.getDatabase(this);
 
         Toolbar toolbar = findViewById(R.id.tbr_dadosaluno);
@@ -54,10 +55,12 @@ public class DadosAlunoActivity extends AppCompatActivity {
         edtTelefone = findViewById(R.id.edt_dadosaluno_telefone);
 
         actCurso = findViewById(R.id.act_dadosaluno_curso);
-        button = findViewById(R.id.btn_dadosaluno);
+        MaterialButton button = findViewById(R.id.btn_dadosaluno);
 
         if (intent.hasExtra("ver_dados")) {
-            mostrarDados(intent.getIntExtra("id", 0));
+            showMenu = true;
+            idAluno = intent.getIntExtra("id", 0);
+            mostrarDados(idAluno);
             button.setVisibility(View.GONE);
         }
         else {  // Cadastrar ou editar aluno
@@ -77,7 +80,7 @@ public class DadosAlunoActivity extends AppCompatActivity {
                     new ArrayAdapter<>(this, R.layout.dm_curso, nomeCursos);
             actCurso.setAdapter(adapter);
             actCurso.setOnItemClickListener((parent, view, position, id) ->
-                                            id_curso = idCursos[position]);
+                                            idCurso = idCursos[position]);
 
             button.setOnClickListener(v -> {
                 boolean erro = false;
@@ -95,7 +98,7 @@ public class DadosAlunoActivity extends AppCompatActivity {
                     aluno.cpf = cpf;
                     aluno.email = email;
                     aluno.telefone = telefone;
-                    aluno.cursoId = id_curso;
+                    aluno.cursoId = idCurso;
                     db.alunoDao().inserirAluno(aluno);
 
                     Toast.makeText(this, "Aluno cadastrado com sucesso", Toast.LENGTH_SHORT).show();
@@ -130,5 +133,39 @@ public class DadosAlunoActivity extends AppCompatActivity {
         textInputLayout.setEnabled(true);
         editText.setText(text);
         editText.setEnabled(false);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.dadosaluno_menu, menu);
+        if (!showMenu) {
+            for (int i = 0; i < menu.size(); i++)
+                menu.getItem(i).setVisible(false);
+        }
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.editar_aluno:
+                // TODO
+                return true;
+            case R.id.remover_aluno:
+                new MaterialAlertDialogBuilder(this)
+                        .setMessage("Tem certeza que deseja remover este aluno?")
+                        .setPositiveButton("Sim", (dialog, i) -> {
+                            Aluno aluno = db.alunoDao().selecionarAluno(idAluno);
+                            db.alunoDao().removerAluno(aluno);
+                            startActivity(new Intent(DadosAlunoActivity.this, MainActivity.class));
+                            finish();
+                        })
+                        .setNegativeButton("Não", null)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
