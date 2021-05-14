@@ -8,8 +8,8 @@ import java.util.List;
 public class CursoAluno {
     @Embedded public Curso curso;
     @Relation (
-        parentColumn = "cursoId",
-        entityColumn = "cursoId"
+        parentColumn = "curso_id",
+        entityColumn = "curso_id"
     )
     public List<Aluno> alunos;
 }

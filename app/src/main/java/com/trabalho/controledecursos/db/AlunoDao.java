@@ -24,4 +24,7 @@ public interface AlunoDao {
 
     @Query("SELECT * FROM aluno WHERE aluno_id = :id")
     Aluno selecionarAluno(int id);
+
+    @Query("SELECT nome_aluno FROM Aluno WHERE curso_id = :id ORDER BY nome_aluno COLLATE NOCASE")
+    String[] selecionarAlunosCurso(int id);
 }

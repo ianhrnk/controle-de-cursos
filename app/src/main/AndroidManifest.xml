@@ -13,9 +13,6 @@
             android:name=".DadosAlunoActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".CursoActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".DadosCursoActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity"

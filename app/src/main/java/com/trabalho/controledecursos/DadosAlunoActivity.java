@@ -121,6 +121,9 @@ public class DadosAlunoActivity extends AppCompatActivity {
     // Retorna true se tiver erros na entrada do usuário, caso contrário, retorna falso
     private boolean possuiErrosEntrada() {
         boolean erro = false;
+        txtNome.setError(null);
+        txtCpf.setError(null);
+        txtTelefone.setError(null);
 
         nome = edtNome.getText().toString();
         cpf = edtCpf.getText().toString();
@@ -209,6 +212,9 @@ public class DadosAlunoActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("Não", null)
                         .show();
+                return true;
+            case android.R.id.home:
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

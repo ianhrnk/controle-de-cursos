@@ -48,10 +48,9 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.ViewHolder
     public void onBindViewHolder(@NonNull CursosAdapter.ViewHolder holder, int position) {
         holder.txtNomeCurso.setText(cursos.get(position).nomeCurso);
         holder.constraintLayout.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CursoActivity.class);
+            Intent intent = new Intent(context, DadosCursoActivity.class);
+            intent.putExtra("ver_dados", true);
             intent.putExtra("id", cursos.get(position).cursoId);
-            intent.putExtra("nome", cursos.get(position).nomeCurso);
-            intent.putExtra("ch", cursos.get(position).qntdHoras);
             context.startActivity(intent);
         });
     }

@@ -11,6 +11,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static /*volatile*/ AppDatabase INSTANCE;
     public abstract AlunoDao alunoDao();
     public abstract CursoDao cursoDao();
+    public abstract CursoAlunoDao cursoAlunoDao();
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
