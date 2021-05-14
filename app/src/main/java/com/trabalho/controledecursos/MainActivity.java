@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.trabalho.controledecursos.db.AppDatabase;
@@ -79,14 +80,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.main_search:
+            case R.id.main_busca:
                 // TODO
                 return true;
-            case R.id.configuration:
-                // TODO
-                return true;
-            case R.id.about_us:
-                // TODO
+            case R.id.sobre_nos:
+                Snackbar.make(this,
+                        findViewById(R.id.coordinatorlayout_main),
+                        "Desenvolvido por Ian Haranaka e Rodrigo Seiti",
+                        Snackbar.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

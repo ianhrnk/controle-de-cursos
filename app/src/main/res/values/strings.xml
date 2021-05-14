@@ -1,19 +1,22 @@
 <resources>
+    <string name="alunos">Alunos</string>
     <string name="app_name">ControleDeCursos</string>
-    <string name="formato_incorreto">Formato incorreto</string>
-    <string name="concluir">Concluir</string>
+    <string name="buscar">Buscar</string>
     <string name="cadastrar_curso">Cadastrar curso</string>
     <string name="cadastrar_aluno">Cadastrar aluno</string>
-    <string name="editar_dados">Editar dados</string>
-    <string name="remover_aluno">Remover aluno</string>
-    <string name="excluir_curso">Excluir curso</string>
-    <string name="quantidade_horas">Quantidade de horas</string>
-    <string name="nome">Nome</string>
+    <string name="ch">CH: %1$d</string>
+    <string name="concluir">Concluir</string>
+    <string name="cpf">CPF</string>
     <string name="curso">Curso</string>
     <string name="cursos">Cursos</string>
-    <string name="alunos">Alunos</string>
-    <string name="ch">CH: %1$d</string>
-    <string name="cpf">CPF</string>
+    <string name="editar_dados">Editar dados</string>
     <string name="email">Email</string>
+    <string name="excluir_curso">Excluir curso</string>
+    <string name="ferramenta_busca">Ferramenta de busca</string>
+    <string name="formato_incorreto">Formato incorreto</string>
+    <string name="nome">Nome</string>
+    <string name="quantidade_horas">Quantidade de horas</string>
+    <string name="remover_aluno">Remover aluno</string>
+    <string name="sobre_nos">Sobre nós</string>
     <string name="telefone">Telefone</string>
 </resources>

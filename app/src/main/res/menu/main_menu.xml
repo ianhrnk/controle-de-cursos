@@ -3,19 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/main_search"
-        android:contentDescription="Ferramenta de busca"
+        android:id="@+id/main_busca"
+        android:contentDescription="@string/ferramenta_busca"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="Buscar"
+        android:title="@string/buscar"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/configuration"
-        android:title="Configurações"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/about_us"
-        android:title="Sobre nós" />
+        android:id="@+id/sobre_nos"
+        android:title="@string/sobre_nos" />
 </menu>
