@@ -54,13 +54,10 @@ public class DadosCursoActivity extends AppCompatActivity {
 
             if (!erro) {
                 AppDatabase db = AppDatabase.getDatabase(this);
-                Curso curso = new Curso();
-                curso.nomeCurso = nomeCurso;
-                curso.qntdHoras = Integer.parseInt(qntdHoras);
+                Curso curso = new Curso(nomeCurso, Integer.parseInt(qntdHoras));
                 db.cursoDao().inserirCurso(curso);
 
                 Toast.makeText(this, "Curso cadastrado com sucesso", Toast.LENGTH_SHORT).show();
-
                 Intent it = new Intent(DadosCursoActivity.this, MainActivity.class);
                 startActivity(it);
             }

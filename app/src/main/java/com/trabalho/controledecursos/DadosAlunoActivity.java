@@ -28,12 +28,12 @@ public class DadosAlunoActivity extends AppCompatActivity {
     private String nome, cpf, email, telefone;
     private int idCurso, idAluno;
     private boolean showMenu = false;
+    MaterialButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_aluno);
-        Intent intent = getIntent();
         db = AppDatabase.getDatabase(this);
 
         Toolbar toolbar = findViewById(R.id.tbr_dadosaluno);
@@ -55,24 +55,58 @@ public class DadosAlunoActivity extends AppCompatActivity {
         edtTelefone = findViewById(R.id.edt_dadosaluno_telefone);
 
         actCurso = findViewById(R.id.act_dadosaluno_curso);
-        MaterialButton button = findViewById(R.id.btn_dadosaluno);
+        button = findViewById(R.id.btn_dadosaluno);
+
+        Intent intent = getIntent();
+        idAluno = intent.getIntExtra("id", 0);
+
+        if (idAluno != 0) {
+            mostrarDadosAluno(idAluno);
+        }
 
         if (intent.hasExtra("ver_dados")) {
             showMenu = true;
-            idAluno = intent.getIntExtra("id", 0);
-            mostrarDados(idAluno);
+            desativarCampos();
             button.setVisibility(View.GONE);
         }
-        else {  // Cadastrar ou editar aluno
+        else {  // Editar ou cadastrar aluno
             if (intent.hasExtra("editar_dados")) {
                 button.setText(getString(R.string.concluir));
                 button.setIconResource(R.drawable.outline_done_24);
+
+                button.setOnClickListener(v -> {
+                    if (!possuiErrosEntrada()) {
+                        Aluno aluno = new Aluno(nome, cpf, email, telefone, idCurso);
+                        aluno.alunoId = idAluno;
+                        db.alunoDao().atualizarAluno(aluno);
+                        Toast.makeText(this,
+                                "Edição realizada com sucesso",
+                                Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DadosAlunoActivity.this,
+                                MainActivity.class));
+                        finish();
+                    }
+                });
             }
             else {
                 button.setText(getString(R.string.cadastrar_aluno));
                 button.setIconResource(R.drawable.baseline_add_24);
+                button.setOnClickListener(v -> {
+                    if (!possuiErrosEntrada()) {
+                        Aluno aluno = new Aluno(nome, cpf, email, telefone, idCurso);
+                        db.alunoDao().inserirAluno(aluno);
+
+                        Toast.makeText(this,
+                                "Aluno cadastrado com sucesso",
+                                Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DadosAlunoActivity.this,
+                                MainActivity.class));
+                        finish();
+                    }
+                });
             }
 
+            // Para mapear o curso selecionado no dropdown menu
             int[] idCursos = db.cursoDao().selecionarTodosId();
             String[] nomeCursos = db.cursoDao().selecionarTodosNomes();
 
@@ -80,58 +114,65 @@ public class DadosAlunoActivity extends AppCompatActivity {
                     new ArrayAdapter<>(this, R.layout.dm_curso, nomeCursos);
             actCurso.setAdapter(adapter);
             actCurso.setOnItemClickListener((parent, view, position, id) ->
-                                            idCurso = idCursos[position]);
-
-            button.setOnClickListener(v -> {
-                boolean erro = false;
-
-                nome = edtNome.getText().toString();
-                cpf = edtCpf.getText().toString();
-                email = edtEmail.getText().toString();
-                telefone = edtTelefone.getText().toString();
-
-                // TODO: Checar erros da entrada do usuário
-
-                if (!erro) {
-                    Aluno aluno = new Aluno();
-                    aluno.nomeAluno = nome;
-                    aluno.cpf = cpf;
-                    aluno.email = email;
-                    aluno.telefone = telefone;
-                    aluno.cursoId = idCurso;
-                    db.alunoDao().inserirAluno(aluno);
-
-                    Toast.makeText(this, "Aluno cadastrado com sucesso", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(DadosAlunoActivity.this, MainActivity.class));
-                }
-            });
+                    idCurso = idCursos[position]);
         }
     }
 
+    // Retorna true se tiver erros na entrada do usuário, caso contrário, retorna falso
+    private boolean possuiErrosEntrada() {
+        boolean erro = false;
+
+        nome = edtNome.getText().toString();
+        cpf = edtCpf.getText().toString();
+        email = edtEmail.getText().toString();
+        telefone = edtTelefone.getText().toString();
+
+        if (nome.isEmpty() || nome.length() > 50)
+        {
+            erro = true;
+            txtNome.setError(getString(R.string.formato_incorreto));
+        }
+        if (cpf.length() != 11)
+        {
+            erro = true;
+            txtCpf.setError(getString(R.string.formato_incorreto));
+        }
+        if (telefone.length() > 11)
+        {
+            erro = true;
+            txtTelefone.setError(getString(R.string.formato_incorreto));
+        }
+
+        return erro;
+    }
+
     // Recebe a id do aluno para mostrar as informações dele
-    private void mostrarDados(int id) {
+    private void mostrarDadosAluno(int id) {
         Aluno aluno = db.alunoDao().selecionarAluno(id);
-        desabilitarCampos(txtNome, edtNome, aluno.nomeAluno);
-        desabilitarCampos(txtCpf, edtCpf, aluno.cpf);
-        desabilitarCampos(txtEmail, edtEmail, aluno.email);
-        desabilitarCampos(txtTelefone, edtTelefone, aluno.telefone);
-        desabilitarCampoCurso(txtCurso, actCurso, db.cursoDao().selecionarCurso(aluno.cursoId).nomeCurso);
+        edtNome.setText(aluno.nomeAluno);
+        edtCpf.setText(aluno.cpf);
+        edtEmail.setText(aluno.email);
+        edtTelefone.setText(aluno.telefone);
+        actCurso.setText(db.cursoDao().selecionarNome(aluno.cursoId));
     }
 
-    // Desabilita o campo curso e mostra o curso do aluno
-    private void desabilitarCampoCurso(TextInputLayout textInputLayout, AutoCompleteTextView actTextView, String text) {
-        textInputLayout.setEnabled(true);
-        textInputLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
-        actTextView.setText(text);
-        actTextView.setEnabled(false);
+    // Desativa todos os campos para não permitir a edição
+    private void desativarCampos() {
+        desativarCampo(txtNome, edtNome);
+        desativarCampo(txtCpf, edtCpf);
+        desativarCampo(txtEmail, edtEmail);
+        desativarCampo(txtTelefone, edtTelefone);
+
+        txtCurso.setEnabled(true);
+        txtCurso.setEndIconMode(TextInputLayout.END_ICON_NONE);
+        actCurso.setEnabled(false);
     }
 
-    // Desabilita os demais campos e mostra o dado daquele campo
-    private void desabilitarCampos(TextInputLayout textInputLayout, TextInputEditText editText, String text) {
+    // Desativa um único campo
+    private void desativarCampo(TextInputLayout textInputLayout, TextInputEditText editText) {
         textInputLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
         textInputLayout.setCounterEnabled(false);
         textInputLayout.setEnabled(true);
-        editText.setText(text);
         editText.setEnabled(false);
     }
 
@@ -150,7 +191,11 @@ public class DadosAlunoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.editar_aluno:
-                // TODO
+                Intent intent = new Intent(DadosAlunoActivity.this,
+                        DadosAlunoActivity.class);
+                intent.putExtra("editar_dados", true);
+                intent.putExtra("id", idAluno);
+                startActivity(intent);
                 return true;
             case R.id.remover_aluno:
                 new MaterialAlertDialogBuilder(this)
@@ -158,7 +203,8 @@ public class DadosAlunoActivity extends AppCompatActivity {
                         .setPositiveButton("Sim", (dialog, i) -> {
                             Aluno aluno = db.alunoDao().selecionarAluno(idAluno);
                             db.alunoDao().removerAluno(aluno);
-                            startActivity(new Intent(DadosAlunoActivity.this, MainActivity.class));
+                            startActivity(new Intent(DadosAlunoActivity.this,
+                                    MainActivity.class));
                             finish();
                         })
                         .setNegativeButton("Não", null)

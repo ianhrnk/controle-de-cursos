@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DadosAlunoActivity">
+    tools:context=".DadosAlunoActivity"
+    android:focusableInTouchMode="true"
+    android:clickable="true"
+    android:focusable="true" >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbr_dadosaluno"
@@ -112,7 +115,7 @@
         app:startIconContentDescription="Telefone"
         app:endIconMode="clear_text"
         app:counterEnabled="true"
-        app:counterMaxLength="9"
+        app:counterMaxLength="11"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
