@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.trabalho.controledecursos.db.AppDatabase;
@@ -164,23 +165,24 @@ public class DadosCursoActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.remover_curso:
-                // TODO: Verificar se há alunos cadastrados, avisar o usuário e não permitir a remoção
-                // if (nomeAlunos.length == 0)
-                /*new MaterialAlertDialogBuilder(this)
+                if (nomeAlunos.length == 0) // Se não tiver nenhum aluno cadastrado
+                    new MaterialAlertDialogBuilder(this)
                         .setMessage("Tem certeza que deseja excluir este curso?")
                         .setPositiveButton("Sim", (dialog, i) -> {
                             Curso curso = db.cursoDao().selecionarCurso(idCurso);
-                            db.cursoDao().removerCurso(curso);
+                            db.cursoDao().deletarCurso(curso);
                             startActivity(new Intent(DadosCursoActivity.this,
                                     MainActivity.class));
                             finish();
                         })
                         .setNegativeButton("Não", null)
-                        .show();*/
-                // Se não {
-                //  Snackbar.make(this, R.string.text_label, Snackbar.LENGTH_SHORT)
-                //    .show()
-                //}
+                        .show();
+                else {
+                    Snackbar.make(this,
+                          findViewById(R.id.constraintlayout_dadoscurso),
+                          "Não foi possível deletar este curso, há alunos cadastrados nele",
+                          Snackbar.LENGTH_SHORT).show();
+                }
                 return true;
             case android.R.id.home:
                 finish();

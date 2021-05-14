@@ -2,12 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintlayout_dadoscurso"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DadosCursoActivity"
-    android:focusableInTouchMode="true"
     android:clickable="true"
-    android:focusable="true" >
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".DadosCursoActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbr_dadoscurso"
@@ -57,15 +58,15 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:hint="@string/quantidade_horas"
-        app:startIconDrawable="@drawable/baseline_schedule_24"
-        app:startIconContentDescription="Horas"
-        app:endIconMode="clear_text"
         app:counterEnabled="true"
         app:counterMaxLength="4"
+        app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_dadoscurso_nome">
+        app:layout_constraintTop_toBottomOf="@+id/txt_dadoscurso_nome"
+        app:startIconContentDescription="Horas"
+        app:startIconDrawable="@drawable/baseline_schedule_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_dadoscurso_ch"
