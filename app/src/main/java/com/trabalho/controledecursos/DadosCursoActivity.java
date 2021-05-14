@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -24,9 +27,11 @@ public class DadosCursoActivity extends AppCompatActivity {
     TextInputLayout txtNome, txtQntdHoras;
     TextInputEditText edtNome, edtQntdHoras;
     MaterialButton button;
+    TextView txtAlunos;
+    ListView listView;
     private boolean showMenu = false;
     String nome, qntdHoras;
-    int idCurso;
+    int idCurso, idAluno;
     String[] nomeAlunos;
 
 
@@ -47,7 +52,10 @@ public class DadosCursoActivity extends AppCompatActivity {
         txtQntdHoras = findViewById(R.id.txt_dadoscurso_ch);
         edtNome = findViewById(R.id.edt_dadoscurso_nome);
         edtQntdHoras = findViewById(R.id.edt_dadoscurso_ch);
+
         button = findViewById(R.id.btn_dadoscurso);
+        txtAlunos = findViewById(R.id.txt_dadoscurso_aluno);
+        listView = findViewById(R.id.listview_dadoscurso_alunos);
 
         Intent intent = getIntent();
         idCurso = intent.getIntExtra("id", 0);
@@ -63,6 +71,9 @@ public class DadosCursoActivity extends AppCompatActivity {
             button.setVisibility(View.GONE);
         }
         else {  // Editar ou cadastrar curso
+            txtAlunos.setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
+
             if (intent.hasExtra("editar_dados")) {
                 button.setText(getString(R.string.concluir));
                 button.setIconResource(R.drawable.outline_done_24);
@@ -106,6 +117,17 @@ public class DadosCursoActivity extends AppCompatActivity {
         Curso curso = db.cursoDao().selecionarCurso(id);
         edtNome.setText(curso.nomeCurso);
         edtQntdHoras.setText(String.valueOf(curso.qntdHoras));
+        listarAlunosCurso();
+    }
+
+    private void listarAlunosCurso() {
+        if (nomeAlunos.length != 0) { // Se tiver alunos cadastrados
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<>(this, R.layout.curso_aluno, nomeAlunos);
+            listView.setAdapter(adapter);
+        }
+        else
+            txtAlunos.setText(R.string.nao_tem_alunos);
     }
 
     // Desativa todos os campos para não permitir a edição

@@ -14,6 +14,7 @@
     <string name="excluir_curso">Excluir curso</string>
     <string name="ferramenta_busca">Ferramenta de busca</string>
     <string name="formato_incorreto">Formato incorreto</string>
+    <string name="nao_tem_alunos">Não há alunos cadastrados neste curso</string>
     <string name="nome">Nome</string>
     <string name="quantidade_horas">Quantidade de horas</string>
     <string name="remover_aluno">Remover aluno</string>
