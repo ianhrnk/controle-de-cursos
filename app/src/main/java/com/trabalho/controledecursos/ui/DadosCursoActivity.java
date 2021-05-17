@@ -72,13 +72,6 @@ public class DadosCursoActivity extends AppCompatActivity {
         // Recebe a posição do curso no RecyclerView para mostrar os dados dele na atividade.
         posCurso = intent.getIntExtra("posCurso", 0);
 
-        // Salvar as informação do curso e seus alunos é útil quando é preciso
-        // exibir e/ou editar os dados.
-        if (!cursoAlunos.isEmpty()) {
-            curso = cursoAlunos.get(posCurso).curso;
-            alunos = cursoAlunos.get(posCurso).alunos;
-        }
-
         if (intent.hasExtra("ver_dados")) {
             mostrarDadosCurso();
             desativarCampos();
@@ -140,6 +133,7 @@ public class DadosCursoActivity extends AppCompatActivity {
      * Método usado para mostrar os dados do curso em seus respectivos campos (TextField).
      */
     private void mostrarDadosCurso() {
+        curso = cursoAlunos.get(posCurso).curso;
         edtNome.setText(curso.getNome());
         edtQntdHoras.setText(String.valueOf(curso.getQntdHoras()));
         listarAlunos();
@@ -149,6 +143,7 @@ public class DadosCursoActivity extends AppCompatActivity {
      * Método usado para listar os nomes dos alunos do curso na ListView.
      */
     private void listarAlunos() {
+        alunos = cursoAlunos.get(posCurso).alunos;
         if (alunos.size() != 0) { // Se tiver alunos cadastrados
             List<String> nomeAlunos = new ArrayList<>();
             for(Aluno aluno : alunos)

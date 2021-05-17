@@ -34,6 +34,6 @@ public interface CursoDao {
     LiveData<int[]> selecionarIds();
 
     @Transaction
-    @Query("SELECT * FROM Curso ORDER BY nome COLLATE NOCASE")
+    @Query("SELECT * FROM curso ORDER BY nome COLLATE NOCASE")
     LiveData<List<CursoAlunos>> obterAlunos();
 }

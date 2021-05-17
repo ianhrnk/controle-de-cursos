@@ -72,13 +72,6 @@ public class DadosAlunoActivity extends AppCompatActivity {
         // Recebe a posição do aluno no RecyclerView para mostrar os dados dele na atividade.
         posAluno = intent.getIntExtra("posAluno", 0);
 
-        // Salvar as informação do aluno e seu curso é útil
-        // quando é preciso exibir e/ou editar os dados.
-        if (!alunos.isEmpty()) {
-            aluno = alunos.get(posAluno);
-            idCurso = aluno.getCursoId();
-        }
-
         if (intent.hasExtra("ver_dados")) {
             mostrarDadosAluno();
             desativarCampos();
@@ -163,6 +156,9 @@ public class DadosAlunoActivity extends AppCompatActivity {
      * Método usado para mostrar os dados do aluno em seus respectivos campos (TextField).
      */
     private void mostrarDadosAluno() {
+        aluno = alunos.get(posAluno);
+        idCurso = aluno.getCursoId();
+
         edtNome.setText(aluno.getNome());
         edtCpf.setText(aluno.getCpf());
         edtEmail.setText(aluno.getEmail());
