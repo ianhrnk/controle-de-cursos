@@ -121,7 +121,8 @@ public class DadosCursoActivity extends AppCompatActivity {
     }
 
     /**
-     * Método usado pelo observer para atualizar a lista de CursoAlunos sempre que houver mudanças.
+     * Método usado pelo observer em CursosFragment para atualizar a lista de cursoAlunos
+     * sempre que houver mudanças.
      * @param CursoAlunos Lista de objetos do tipo CursoAluno
      *                    com todos os cursos e seus alunos agrupados.
      */
