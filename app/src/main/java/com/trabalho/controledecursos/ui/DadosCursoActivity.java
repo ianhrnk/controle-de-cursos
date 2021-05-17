@@ -199,7 +199,7 @@ public class DadosCursoActivity extends AppCompatActivity {
             erro = true;
             txtNome.setError(getString(R.string.formato_incorreto));
         }
-        if (qntdHoras.length() > 4) {
+        if (qntdHoras.isEmpty() || qntdHoras.length() > 4) {
             erro = true;
             txtQntdHoras.setError(getString(R.string.formato_incorreto));
         }
