@@ -6,7 +6,7 @@
     android:ellipsize="end"
     android:maxLines="1"
     android:padding="10dp"
-    android:textAppearance="?attr/textAppearanceSubtitle1"
+    android:textColor="@color/secondaryTextColor"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />

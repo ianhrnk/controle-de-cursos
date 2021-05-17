@@ -10,12 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ControleDeCursos">
         <activity
-            android:name=".DadosAlunoActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".ui.DadosAlunoActivity"
+            android:parentActivityName=".ui.MainActivity" />
         <activity
-            android:name=".DadosCursoActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity"
+            android:name=".ui.DadosCursoActivity"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.MainActivity"
                   android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

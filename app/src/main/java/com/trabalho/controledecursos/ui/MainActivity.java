@@ -1,4 +1,4 @@
-package com.trabalho.controledecursos;
+package com.trabalho.controledecursos.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,25 +17,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.trabalho.controledecursos.db.AppDatabase;
+import com.trabalho.controledecursos.R;
 
 public class MainActivity extends AppCompatActivity {
-    private AppDatabase db;
-    private Toolbar tbrMain;
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
     private FloatingActionButton fabAddCurso;
     private FloatingActionButton fabAddAluno;
-    //private int tabPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = AppDatabase.getDatabase(this);
-
-        tbrMain = findViewById(R.id.tbr_main);
+        Toolbar tbrMain = findViewById(R.id.tbr_main);
         setSupportActionBar(tbrMain);
 
         fabAddCurso = findViewById(R.id.fab_main_addcurso);
@@ -46,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         fabAddAluno.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, DadosAlunoActivity.class)));
 
-        tabLayout = findViewById(R.id.tablayout_main);
-        viewPager = findViewById(R.id.viewpager_main);
+        TabLayout tabLayout = findViewById(R.id.tablayout_main);
+        ViewPager2 viewPager = findViewById(R.id.viewpager_main);
         viewPager.setAdapter(new ViewPagerAdapter(this));
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
@@ -64,12 +57,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*@Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt("tabPosition", tabLayout.getSelectedTabPosition());
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -79,28 +66,17 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.main_busca:
-                // TODO
-                return true;
-            case R.id.sobre_nos:
-                Snackbar.make(this,
-                        findViewById(R.id.coordinatorlayout_main),
-                        "Desenvolvido por Ian Haranaka e Rodrigo Seiti",
-                        Snackbar.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.sobre_nos) {
+            Snackbar.make(this,
+                    findViewById(R.id.coordinatorlayout_main),
+                    "Desenvolvido por Ian Haranaka e Rodrigo Seiti",
+                    Snackbar.LENGTH_SHORT).show();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        // Não faz nada ao pressionar o botão de voltar
-    }
-
-    public class ViewPagerAdapter extends FragmentStateAdapter {
-        private final int NUM_ABAS = 2;
+    public static class ViewPagerAdapter extends FragmentStateAdapter {
 
         public ViewPagerAdapter(FragmentActivity fa) {
             super(fa);
@@ -110,17 +86,24 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment createFragment(int position) {
             if (position == 0)
-                return new CursosFragment(db.cursoDao());
+                return new CursosFragment();
             else
-                return new AlunosFragment(db.alunoDao());
+                return new AlunosFragment();
         }
 
+        /**
+         * Retorna o número total de abas, neste caso, 2.
+         */
         @Override
         public int getItemCount() {
-            return NUM_ABAS;
+            return 2;
         }
     }
 
+    /**
+     * Executa a mudança dos botões principais de acordo com a aba selecionada.
+     * @param position Index da aba
+     */
     private void changeFab(int position) {
         if (position == 0) {
             fabAddCurso.show();

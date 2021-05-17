@@ -8,18 +8,18 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".DadosCursoActivity">
+    tools:context=".ui.DadosCursoActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbr_dadoscurso"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Dados do curso" />
+        app:title="Dados do curso"
+        app:titleTextColor="@color/primaryTextColor" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txt_dadoscurso_nome"
@@ -45,7 +45,8 @@
             android:id="@+id/edt_dadoscurso_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/secondaryTextColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -72,7 +73,8 @@
             android:id="@+id/edt_dadoscurso_ch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberSigned" />
+            android:inputType="numberSigned"
+            android:textColor="@color/secondaryTextColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -110,8 +112,8 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:text="@string/alunos"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

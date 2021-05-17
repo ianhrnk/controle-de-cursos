@@ -1,4 +1,4 @@
-package com.trabalho.controledecursos;
+package com.trabalho.controledecursos.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.trabalho.controledecursos.db.Aluno;
-import com.trabalho.controledecursos.db.AlunoDao;
+import com.trabalho.controledecursos.R;
+import com.trabalho.controledecursos.db.entity.Aluno;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlunosAdapter extends RecyclerView.Adapter<AlunosAdapter.ViewHolder> {
     private final Context context;
-    private final List<Aluno> alunos;
+    private List<Aluno> alunos = new ArrayList<>();
+
+    public AlunosAdapter(Context context) {
+        this.context = context;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ConstraintLayout constraintLayout;
@@ -31,11 +36,6 @@ public class AlunosAdapter extends RecyclerView.Adapter<AlunosAdapter.ViewHolder
         }
     }
 
-    public AlunosAdapter(Context context, AlunoDao alunoDao) {
-        this.context = context;
-        alunos = alunoDao.selecionarTodos();
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,11 +46,13 @@ public class AlunosAdapter extends RecyclerView.Adapter<AlunosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull AlunosAdapter.ViewHolder holder, int position) {
-        holder.txtNomeAluno.setText(alunos.get(position).nomeAluno);
+        Aluno aluno = alunos.get(position);
+
+        holder.txtNomeAluno.setText(aluno.getNome());
         holder.constraintLayout.setOnClickListener(v -> {
             Intent intent = new Intent(context, DadosAlunoActivity.class);
             intent.putExtra("ver_dados", true);
-            intent.putExtra("id", alunos.get(position).alunoId);
+            intent.putExtra("posAluno", position);
             context.startActivity(intent);
         });
     }
@@ -58,5 +60,10 @@ public class AlunosAdapter extends RecyclerView.Adapter<AlunosAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return alunos.size();
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+        notifyDataSetChanged();
     }
 }

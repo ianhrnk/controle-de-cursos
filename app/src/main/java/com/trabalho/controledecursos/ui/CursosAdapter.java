@@ -1,7 +1,8 @@
-package com.trabalho.controledecursos;
+package com.trabalho.controledecursos.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.trabalho.controledecursos.db.Curso;
-import com.trabalho.controledecursos.db.CursoDao;
+import com.trabalho.controledecursos.R;
+import com.trabalho.controledecursos.db.entity.Curso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.ViewHolder> {
     private final Context context;
-    private final List<Curso> cursos;
+    private List<Curso> cursos = new ArrayList<>();
+
+    public CursosAdapter(Context context) {
+        this.context = context;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ConstraintLayout constraintLayout;
@@ -31,11 +37,6 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.ViewHolder
         }
     }
 
-    public CursosAdapter(Context context, CursoDao cursoDao) {
-        this.context = context;
-        cursos = cursoDao.selecionarTodos();
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,11 +47,13 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CursosAdapter.ViewHolder holder, int position) {
-        holder.txtNomeCurso.setText(cursos.get(position).nomeCurso);
+        Curso curso = cursos.get(position);
+
+        holder.txtNomeCurso.setText(curso.getNome());
         holder.constraintLayout.setOnClickListener(v -> {
             Intent intent = new Intent(context, DadosCursoActivity.class);
             intent.putExtra("ver_dados", true);
-            intent.putExtra("id", cursos.get(position).cursoId);
+            intent.putExtra("posCurso", position);
             context.startActivity(intent);
         });
     }
@@ -58,5 +61,10 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return cursos.size();
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+        notifyDataSetChanged();
     }
 }

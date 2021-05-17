@@ -1,7 +1,8 @@
-package com.trabalho.controledecursos;
+package com.trabalho.controledecursos.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,27 +20,36 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.trabalho.controledecursos.db.AppDatabase;
-import com.trabalho.controledecursos.db.Curso;
+import com.trabalho.controledecursos.R;
+import com.trabalho.controledecursos.db.CursoAlunos;
+import com.trabalho.controledecursos.db.entity.Aluno;
+import com.trabalho.controledecursos.db.entity.Curso;
+import com.trabalho.controledecursos.viewmodel.AppViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class DadosCursoActivity extends AppCompatActivity {
-    AppDatabase db;
-    TextInputLayout txtNome, txtQntdHoras;
-    TextInputEditText edtNome, edtQntdHoras;
-    MaterialButton button;
-    TextView txtAlunos;
-    ListView listView;
-    private boolean showMenu = false;
-    String nome, qntdHoras;
-    int idCurso, idAluno;
-    String[] nomeAlunos;
+    private AppViewModel viewModel;
+    private TextInputLayout txtNome, txtQntdHoras;
+    private TextInputEditText edtNome, edtQntdHoras;
+    private MaterialButton button;
+    private TextView txtAlunos;
+    private ListView listView;
+    private boolean mostrarMenu = false;
+    private String nome, qntdHoras;
 
+    private int posCurso;
+    private static List<CursoAlunos> cursoAlunos = new ArrayList<>();
+    private Curso curso;
+    private List<Aluno> alunos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_curso);
-        db = AppDatabase.getDatabase(this);
+        viewModel = new ViewModelProvider(this).get(AppViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.tbr_dadoscurso);
         setSupportActionBar(toolbar);
@@ -58,31 +68,38 @@ public class DadosCursoActivity extends AppCompatActivity {
         listView = findViewById(R.id.listview_dadoscurso_alunos);
 
         Intent intent = getIntent();
-        idCurso = intent.getIntExtra("id", 0);
-        nomeAlunos = db.alunoDao().selecionarAlunosCurso(idCurso);
 
-        if (idCurso != 0) {
-            mostrarDadosCurso(idCurso);
+        // Recebe a posição do curso no RecyclerView para mostrar os dados dele na atividade.
+        posCurso = intent.getIntExtra("posCurso", 0);
+
+        // Salvar as informação do curso e seus alunos é útil quando é preciso
+        // exibir e/ou editar os dados.
+        if (!cursoAlunos.isEmpty()) {
+            curso = cursoAlunos.get(posCurso).curso;
+            alunos = cursoAlunos.get(posCurso).alunos;
         }
 
         if (intent.hasExtra("ver_dados")) {
-            showMenu = true;
+            mostrarDadosCurso();
             desativarCampos();
+            mostrarMenu = true;
             button.setVisibility(View.GONE);
         }
-        else {  // Editar ou cadastrar curso
+        else {  // Editar ou cadastrar um curso
             txtAlunos.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
 
             if (intent.hasExtra("editar_dados")) {
-                button.setText(getString(R.string.concluir));
-                button.setIconResource(R.drawable.outline_done_24);
+                mostrarDadosCurso();
+                button.setText(getString(R.string.salvar));
+                button.setIconResource(R.drawable.baseline_save_24);
 
                 button.setOnClickListener(v -> {
                     if (!possuiErrosEntrada()) {
-                        Curso curso = new Curso(nome, Integer.parseInt(qntdHoras));
-                        curso.cursoId = idCurso;
-                        db.cursoDao().atualizarCurso(curso);
+                        curso.setNome(nome);
+                        curso.setQntdHoras(Integer.parseInt(qntdHoras));
+                        viewModel.atualizarCurso(curso);
+
                         Toast.makeText(this,
                                 "Edição realizada com sucesso",
                                 Toast.LENGTH_SHORT).show();
@@ -97,14 +114,12 @@ public class DadosCursoActivity extends AppCompatActivity {
                 button.setIconResource(R.drawable.baseline_add_24);
                 button.setOnClickListener(v -> {
                     if (!possuiErrosEntrada()) {
-                        Curso curso = new Curso(nome, Integer.parseInt(qntdHoras));
-                        db.cursoDao().inserirCurso(curso);
+                        Curso novoCurso = new Curso(nome, Integer.parseInt(qntdHoras));
+                        viewModel.inserirCurso(novoCurso);
 
                         Toast.makeText(this,
                                 "Curso cadastrado com sucesso",
                                 Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(DadosCursoActivity.this,
-                                MainActivity.class));
                         finish();
                     }
                 });
@@ -112,16 +127,33 @@ public class DadosCursoActivity extends AppCompatActivity {
         }
     }
 
-    // Recebe a id do curso para mostrar as informações dele
-    private void mostrarDadosCurso(int id) {
-        Curso curso = db.cursoDao().selecionarCurso(id);
-        edtNome.setText(curso.nomeCurso);
-        edtQntdHoras.setText(String.valueOf(curso.qntdHoras));
-        listarAlunosCurso();
+    /**
+     * Método usado pelo observer para atualizar a lista de CursoAlunos sempre que houver mudanças.
+     * @param CursoAlunos Lista de objetos do tipo CursoAluno
+     *                    com todos os cursos e seus alunos agrupados.
+     */
+    public static void atualizarCursoAlunos(List<CursoAlunos> CursoAlunos) {
+        cursoAlunos = CursoAlunos;
     }
 
-    private void listarAlunosCurso() {
-        if (nomeAlunos.length != 0) { // Se tiver alunos cadastrados
+    /**
+     * Método usado para mostrar os dados do curso em seus respectivos campos (TextField).
+     */
+    private void mostrarDadosCurso() {
+        edtNome.setText(curso.getNome());
+        edtQntdHoras.setText(String.valueOf(curso.getQntdHoras()));
+        listarAlunos();
+    }
+
+    /**
+     * Método usado para listar os nomes dos alunos do curso na ListView.
+     */
+    private void listarAlunos() {
+        if (alunos.size() != 0) { // Se tiver alunos cadastrados
+            List<String> nomeAlunos = new ArrayList<>();
+            for(Aluno aluno : alunos)
+                nomeAlunos.add(aluno.getNome());
+
             ArrayAdapter<String> adapter =
                     new ArrayAdapter<>(this, R.layout.curso_aluno, nomeAlunos);
             listView.setAdapter(adapter);
@@ -130,13 +162,19 @@ public class DadosCursoActivity extends AppCompatActivity {
             txtAlunos.setText(R.string.nao_tem_alunos);
     }
 
-    // Desativa todos os campos para não permitir a edição
+    /**
+     * Método usado para desativar todos os campos para não permitir a edição.
+     */
     private void desativarCampos() {
         desativarCampo(txtNome, edtNome);
         desativarCampo(txtQntdHoras, edtQntdHoras);
     }
 
-    // Desativa um único campo
+    /**
+     * Método usado para desativar um único campo para não permitir a edição.
+     * @param textInputLayout Define o layout do campo.
+     * @param editText Recebe os dados de entrada do usuário.
+     */
     private void desativarCampo(TextInputLayout textInputLayout, TextInputEditText editText) {
         textInputLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
         textInputLayout.setCounterEnabled(false);
@@ -144,20 +182,24 @@ public class DadosCursoActivity extends AppCompatActivity {
         editText.setEnabled(false);
     }
 
-    // Retorna true se tiver erros na entrada do usuário, caso contrário, retorna falso
+    /**
+     * Método usado para verificação de dados de entrada do usuário.
+     * É avisado ao usuário se houver erro em cada um dos campos.
+     * @return Se possuir erros na entrada, retorna true, senão, false.
+     */
     private boolean possuiErrosEntrada() {
         boolean erro = false;
         txtNome.setError(null);
         txtQntdHoras.setError(null);
 
-        nome = edtNome.getText().toString();
-        qntdHoras = edtQntdHoras.getText().toString();
+        nome = Objects.requireNonNull(edtNome.getText()).toString();
+        qntdHoras = Objects.requireNonNull(edtQntdHoras.getText()).toString();
 
         if (nome.isEmpty() || nome.length() > 25) {
             erro = true;
             txtNome.setError(getString(R.string.formato_incorreto));
         }
-        if (qntdHoras.isEmpty() || qntdHoras.length() > 4) {
+        if (qntdHoras.length() > 4) {
             erro = true;
             txtQntdHoras.setError(getString(R.string.formato_incorreto));
         }
@@ -168,8 +210,8 @@ public class DadosCursoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dadoscurso_menu, menu);
-        if (!showMenu) {
-            for (int i = 0; i < menu.size(); i++)
+        if (!mostrarMenu) {
+            for (int i = 0; i < menu.size(); ++i)
                 menu.getItem(i).setVisible(false);
         }
         return true;
@@ -183,18 +225,16 @@ public class DadosCursoActivity extends AppCompatActivity {
                 Intent intent = new Intent(DadosCursoActivity.this,
                         DadosCursoActivity.class);
                 intent.putExtra("editar_dados", true);
-                intent.putExtra("id", idCurso);
+                intent.putExtra("posCurso", posCurso);
                 startActivity(intent);
                 return true;
+
             case R.id.remover_curso:
-                if (nomeAlunos.length == 0) // Se não tiver nenhum aluno cadastrado
+                if (alunos.size() == 0) // Verifica se há alunos cadastrados antes de remover
                     new MaterialAlertDialogBuilder(this)
                         .setMessage("Tem certeza que deseja excluir este curso?")
                         .setPositiveButton("Sim", (dialog, i) -> {
-                            Curso curso = db.cursoDao().selecionarCurso(idCurso);
-                            db.cursoDao().deletarCurso(curso);
-                            startActivity(new Intent(DadosCursoActivity.this,
-                                    MainActivity.class));
+                            viewModel.removerCurso(curso);
                             finish();
                         })
                         .setNegativeButton("Não", null)
@@ -206,6 +246,7 @@ public class DadosCursoActivity extends AppCompatActivity {
                           Snackbar.LENGTH_SHORT).show();
                 }
                 return true;
+
             case android.R.id.home:
                 finish();
                 return true;

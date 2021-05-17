@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DadosAlunoActivity"
+    tools:context=".ui.DadosAlunoActivity"
     android:focusableInTouchMode="true"
     android:clickable="true"
     android:focusable="true" >
@@ -14,11 +14,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Dados do aluno" />
+        app:title="Dados do aluno"
+        app:titleTextColor="@color/primaryTextColor" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txt_dadosaluno_nome"
@@ -58,6 +58,8 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:hint="@string/cpf"
+        app:helperTextEnabled="true"
+        app:helperText="@string/somente_numeros"
         app:startIconDrawable="@drawable/baseline_assignment_ind_24"
         app:startIconContentDescription="CPF"
         app:endIconMode="clear_text"
